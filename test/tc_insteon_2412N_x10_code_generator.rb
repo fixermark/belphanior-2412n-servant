@@ -23,7 +23,11 @@ class TestInsteon_2412N_X10_Codec < Test::Unit::TestCase
     }
     unit_1_code = "6"
     house_code_table.each do |key, value|
-      @marshaller.expects(:send).with("0263"+value+unit_1_code+"00")
+      cur_sequence = sequence(key)
+      @marshaller.expects(:send).with(
+        "0263"+value+unit_1_code+"00").in_sequence(cur_sequence)
+      @marshaller.expects(:send).in_sequence(cur_sequence)
+      @codec.device_on(key+"1")
     end
   end
   def test_unit_codes
