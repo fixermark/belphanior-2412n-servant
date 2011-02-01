@@ -31,6 +31,21 @@ class TestInsteon_2412N_X10_Codec < Test::Unit::TestCase
     end
   end
   def test_unit_codes
+    # map from house codes to hex names
+    unit_code_table = {
+      "1"=>"6", "2"=>"E", "3"=>"2", "4"=>"A",
+      "5"=>"1", "6"=>"9", "7"=>"5", "8"=>"D",
+      "9"=>"7", "10"=>"F", "11"=>"3", "12"=>"B",
+      "13"=>"0", "14"=>"8", "15"=>"4", "16"=>"C",
+    }
+    house_a_code = "6"
+    unit_code_table.each do |key, value|
+      cur_sequence = sequence(key)
+      @marshaller.expects(:send).with(
+        "0263"+house_a_code+value+"00").in_sequence(cur_sequence)
+      @marshaller.expects(:send).in_sequence(cur_sequence)
+      @codec.device_on("A"+key)
+    end
   end
   def test_command_codes
   end

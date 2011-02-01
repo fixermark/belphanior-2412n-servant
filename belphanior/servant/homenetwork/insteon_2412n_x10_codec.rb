@@ -43,7 +43,7 @@ module Belphanior
 
         # Converts house, unit code string to hex command string
         def select_code(house_and_unit)
-          if not house_and_unit.length < 3
+          if not house_and_unit.length <= 3
             raise BadCode,
             "Code should be three characters or less."
           end
