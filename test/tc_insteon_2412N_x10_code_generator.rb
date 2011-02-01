@@ -48,5 +48,22 @@ class TestInsteon_2412N_X10_Codec < Test::Unit::TestCase
     end
   end
   def test_command_codes
+    code_segments = [
+                     "2",  # on
+                     "5",  # brighter
+                     "3",  # off
+                     "4",  # dimmer
+                     ]
+    house_a_code = "6"
+    cur_sequence = sequence("command codes")
+    code_segments.each do |code|
+      @marshaller.expects(:send).in_sequence(cur_sequence)
+      @marshaller.expects(:send).with("0263" + house_a_code + 
+        code + "80").in_sequence(cur_sequence)
+    end
+    @codec.device_on("A1")
+    @codec.device_brighter("A1")
+    @codec.device_off("A1")
+    @codec.device_dimmer("A1")
   end
 end

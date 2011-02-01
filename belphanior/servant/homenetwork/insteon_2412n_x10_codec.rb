@@ -33,13 +33,29 @@ module Belphanior
         end
 
         def device_on(identifier)
-          house_code, unit_code = select_code(identifier)
-          @marshaller.send(X10_PREFIX + house_code + unit_code + ADDRESS_SUFFIX)
-          @marshaller.send(X10_PREFIX + house_code + COMMAND_CODE_TABLE[:on] +
-                           COMMAND_SUFFIX)
+          send_command(identifier, :on)
         end
 
+        def device_off(identifier)
+          send_command(identifier, :off)
+        end
+        
+        def device_brighter(identifier)
+          send_command(identifier, :brighter)
+        end
+
+        def device_dimmer(identifier)
+          send_command(identifier, :dimmer)
+        end
         private
+
+        # sends command to device specified by house and unit string
+        def send_command(house_and_unit, command)
+          house_code, unit_code = select_code(house_and_unit)
+          @marshaller.send(X10_PREFIX + house_code + unit_code + ADDRESS_SUFFIX)
+          @marshaller.send(X10_PREFIX + house_code + COMMAND_CODE_TABLE[command] +
+                           COMMAND_SUFFIX)
+        end
 
         # Converts house, unit code string to hex command string
         def select_code(house_and_unit)
