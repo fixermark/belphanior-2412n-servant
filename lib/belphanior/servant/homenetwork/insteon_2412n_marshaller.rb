@@ -7,7 +7,7 @@ module Belphanior
       class Insteon_2412n_Marshaller
         class ConnectionFailure < RuntimeError
         end
-        def initialize(host, network_class)
+        def initialize(host, network_class=nil)
           @host = host
           if network_class
             @network_class = network_class

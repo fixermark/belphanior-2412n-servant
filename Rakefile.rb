@@ -1,10 +1,13 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
+# TODO(mtomczak): Temporary hack while I figure out gem paths
+$: << File.dirname(__FILE__)+"/lib"
+Gem.path << File.dirname(__FILE__)
 
 desc "Run basic tests"
 Rake::TestTask::new "test" do |t|
-  t.pattern = "test/tc*.rb"
+  t.pattern = "lib/belphanior/servant/homenetwork/test/tc*.rb"
   t.verbose = true
   t.warning = true
 end
