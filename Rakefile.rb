@@ -14,8 +14,5 @@ end
 
 desc "Launch the servant (for testing)"
 task :servant do |t|
-  puts Gem.path
-  puts '---'
-  puts $:
   sh "bin/belphanior-x10-servant"
 end
