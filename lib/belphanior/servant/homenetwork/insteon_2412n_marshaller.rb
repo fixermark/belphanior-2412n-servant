@@ -5,6 +5,7 @@ module Belphanior
   module Servant
     module HomeNetwork
       class Insteon_2412n_Marshaller
+        attr_accessor :host
         class ConnectionFailure < RuntimeError
         end
         def initialize(host, network_class=nil)

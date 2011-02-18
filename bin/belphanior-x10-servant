@@ -1,10 +1,53 @@
 #!/usr/bin/ruby1.8
 require 'rubygems'
 require 'belphanior/servant/servant'
+require 'belphanior/servant/homenetwork/insteon_2412n_marshaller'
+require 'belphanior/servant/homenetwork/insteon_2412n_x10_codec'
 require 'sinatra'
-
-# An empty example; this is the simplest server that can be created.
 
 # Must be called to install and configure default routing for
 # '/', '/config', and '/protocol'
 servant_init
+
+if servant_config.get("insteon_host") == nil
+    servant_config.set("insteon_host","localhost")
+end
+
+marshaller = Belphanior::Servant::HomeNetwork::Insteon_2412n_Marshaller.new(  
+  servant_config.get("insteon_host"))
+
+set(:marshaller, marshaller)
+set(:x10, Belphanior::Servant::HomeNetwork::Insteon_2412n_x10_Codec.new(
+  marshaller))
+
+device_id_arg = ["device id","The house and unit code of the device."]
+
+add_command(
+            :name => "unit_on",
+            :description => "Turn on the designated unit.",
+            :arguments => [device_id_arg],
+            :return => "None.",
+            :usage => ["POST", "/device/${device_id}/on", ""]) { |device_id|
+  settings.x10.device_on(device_id)
+  ""
+}
+
+add_command(
+            :name => "unit_off",
+            :description => "Turn off the designated unit.",
+            :arguments => [device_id_arg],
+            :return => "None.",
+            :usage => ["POST", "/device/${device_id}/off", ""]) { |device_id|
+  settings.x10.device_off(device_id)
+  ""
+}
+
+post '/device/:deviceid/on' do |device_id| 
+  settings.x10.device_on(device_id)
+  ""
+end
+
+post '/device/:deviceid/off' do |device_id|
+  settings.x10.device_off(device_id)
+  ""
+end
