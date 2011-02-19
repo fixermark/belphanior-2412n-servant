@@ -41,22 +41,3 @@ add_command(
   settings.x10.device_off(device_id)
   ""
 }
-
-add_command(
-            :name => "test",
-            :description => "",
-            :arguments => [],
-            :return => "None.",
-            :usage => ["GET","/foo", ""]) {
-  "ok"
-}
-#post '/device/:deviceid/on' do |device_id| 
-#  settings.x10.device_on(device_id)
-#  ""
-#end
-#
-#post '/device/:deviceid/off' do |device_id|
-#  settings.x10.device_off(device_id)
-#  ""
-#end
-
