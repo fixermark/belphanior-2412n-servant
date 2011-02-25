@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'belphanior/servant/homenetwork/insteon_2412n_x10_codec'
 require 'test/unit'
 require 'mocha'
