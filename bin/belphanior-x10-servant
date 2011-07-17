@@ -37,7 +37,7 @@ add_role_description(
                      "return" => "None."
                    },
                    {
-                     "name" => "unit_off",
+                     "name" => "unit off",
                      "description" => "Turn off the designated unit.",
                      "arguments" => [device_id_arg],
                      "return" => "None."
