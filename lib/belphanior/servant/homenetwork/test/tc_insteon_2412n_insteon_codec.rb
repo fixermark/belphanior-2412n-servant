@@ -24,47 +24,34 @@ class TestInsteon_2412N_Insteon_Codec < Test::Unit::TestCase
     @codec.device_on(address)
   end
 
-  #     cur_sequence = sequence(key)
-  #     @marshaller.expects(:send).with(
-  #       "0263"+value+unit_1_code+"00").in_sequence(cur_sequence)
-  #     @marshaller.expects(:send).in_sequence(cur_sequence)
-  #     @codec.device_on(key+"1")
-  #   end
-  # end
-  # def test_unit_codes
-  #   # map from house codes to hex names
-  #   unit_code_table = {
-  #     "1"=>"6", "2"=>"E", "3"=>"2", "4"=>"A",
-  #     "5"=>"1", "6"=>"9", "7"=>"5", "8"=>"D",
-  #     "9"=>"7", "10"=>"F", "11"=>"3", "12"=>"B",
-  #     "13"=>"0", "14"=>"8", "15"=>"4", "16"=>"C",
-  #   }
-  #   house_a_code = "6"
-  #   unit_code_table.each do |key, value|
-  #     cur_sequence = sequence(key)
-  #     @marshaller.expects(:send).with(
-  #       "0263"+house_a_code+value+"00").in_sequence(cur_sequence)
-  #     @marshaller.expects(:send).in_sequence(cur_sequence)
-  #     @codec.device_on("A"+key)
-  #   end
-  # end
-  # def test_command_codes
-  #   code_segments = [
-  #                    "2",  # on
-  #                    "5",  # brighter
-  #                    "3",  # off
-  #                    "4",  # dimmer
-  #                    ]
-  #   house_a_code = "6"
-  #   cur_sequence = sequence("command codes")
-  #   code_segments.each do |code|
-  #     @marshaller.expects(:send).in_sequence(cur_sequence)
-  #     @marshaller.expects(:send).with("0263" + house_a_code +
-  #       code + "80").in_sequence(cur_sequence)
-  #   end
-  #   @codec.device_on("A1")
-  #   @codec.device_brighter("A1")
-  #   @codec.device_off("A1")
-  #   @codec.device_dimmer("A1")
-  # end
+  def test_brightness
+    address = "001122"
+    on_code = "11"
+    @marshaller.expects(:send).with(
+      @insteon_prefix + address + on_code + "00")
+    @codec.device_set_brightness(address, 0)
+
+    @marshaller.expects(:send).with(
+      @insteon_prefix + address + on_code + "FF")
+    @codec.device_set_brightness(address, 1)
+
+    # Exact equality
+    @marshaller.expects(:send).with(
+      @insteon_prefix + address + on_code + "7F")
+    @codec.device_set_brightness(address, 0.5)
+
+    # Near-equality
+    @marshaller.expects(:send).with(
+      @insteon_prefix + address + on_code + "7F")
+    @codec.device_set_brightness(address, 0.4)
+
+    # Out of bounds
+    @marshaller.expects(:send).with(
+      @insteon_prefix + address + on_code + "00")
+    @codec.device_set_brightness(address, -1)
+
+    @marshaller.expects(:send).with(
+      @insteon_prefix + address + on_code + "FF")
+    @codec.device_set_brightness(address, 1.5)
+  end
 end
