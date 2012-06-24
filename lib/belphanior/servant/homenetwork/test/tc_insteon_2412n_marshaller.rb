@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'belphanior/servant/homenetwork/insteon_2412n_marshaller'
 require 'test/unit'
 require 'mocha'
@@ -7,7 +8,7 @@ class TestInsteon_2412N_Marshaller < Test::Unit::TestCase
   def setup
     @netmock = mock('Net::HTTP')
     @requestmock = mock()
-    @marshaller = 
+    @marshaller =
       Belphanior::Servant::HomeNetwork::Insteon_2412n_Marshaller.new(
       'localhost', @netmock)
   end
