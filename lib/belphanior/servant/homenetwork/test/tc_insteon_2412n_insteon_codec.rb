@@ -20,7 +20,7 @@ class TestInsteon_2412N_Insteon_Codec < Test::Unit::TestCase
     fast_on_code = "12"
     fast_off_code = "14"
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + fast_on_code + "FF")
+      @insteon_prefix + address + "0F" + fast_on_code + "FF")
     @codec.device_on(address)
   end
 
@@ -28,30 +28,30 @@ class TestInsteon_2412N_Insteon_Codec < Test::Unit::TestCase
     address = "001122"
     on_code = "11"
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + on_code + "00")
+      @insteon_prefix + address + "0F" + on_code + "00")
     @codec.device_set_brightness(address, 0)
 
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + on_code + "FF")
+      @insteon_prefix + address + "0F" + on_code + "FF")
     @codec.device_set_brightness(address, 1)
 
     # Exact equality
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + on_code + "7F")
+      @insteon_prefix + address + "0F" + on_code + "7F")
     @codec.device_set_brightness(address, 0.5)
 
     # Near-equality
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + on_code + "7F")
+      @insteon_prefix + address + "0F" + on_code + "7F")
     @codec.device_set_brightness(address, 0.4)
 
     # Out of bounds
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + on_code + "00")
+      @insteon_prefix + address + "0F" + on_code + "00")
     @codec.device_set_brightness(address, -1)
 
     @marshaller.expects(:send).with(
-      @insteon_prefix + address + on_code + "FF")
+      @insteon_prefix + address + "0F" + on_code + "FF")
     @codec.device_set_brightness(address, 1.5)
   end
 end

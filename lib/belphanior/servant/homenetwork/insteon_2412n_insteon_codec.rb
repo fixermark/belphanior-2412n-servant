@@ -45,7 +45,7 @@ module Belphanior
 
         # sends command to device specified by address.
         def send_command(address, command, brightness_code)
-          @marshaller.send(INSTEON_PREFIX + address +
+          @marshaller.send(INSTEON_PREFIX + address + "0F" +
             COMMAND_CODE_TABLE[command] + brightness_code)
         end
 

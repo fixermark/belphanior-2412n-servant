@@ -3,6 +3,7 @@ require 'rubygems'
 require 'belphanior/servant/servant'
 require 'belphanior/servant/homenetwork/insteon_2412n_marshaller'
 require 'belphanior/servant/homenetwork/insteon_2412n_x10_codec'
+require 'belphanior/servant/homenetwork/insteon_2412n_insteon_codec'
 require 'sinatra'
 
 # Must be called to install and configure default routing for
@@ -13,12 +14,14 @@ if servant_config.get("insteon_host") == nil
     servant_config.set("insteon_host","localhost")
 end
 
-marshaller = Belphanior::Servant::HomeNetwork::Insteon_2412n_Marshaller.new(  
+marshaller = Belphanior::Servant::HomeNetwork::Insteon_2412n_Marshaller.new(
   servant_config.get("insteon_host"))
 
 set(:marshaller, marshaller)
 set(:x10, Belphanior::Servant::HomeNetwork::Insteon_2412n_x10_Codec.new(
   marshaller))
+set(:insteon, Belphanior::Servant::HomeNetwork::Insteon_2412n_Insteon_Codec.new(
+    marshaller))
 
 device_id_arg = {
   "name" => "device",
@@ -30,27 +33,93 @@ add_role_description(
     "name" => "x10 controller",
     "description" => "A controller for X10 devices, which can address the devices by house code and unit code.",
     "commands" => [
-                   {
-                     "name" => "unit on",
-                     "description" => "Turn on the designated unit.",
-                     "arguments" => [device_id_arg],
-                     "return" => "None."
-                   },
-                   {
-                     "name" => "unit off",
-                     "description" => "Turn off the designated unit.",
-                     "arguments" => [device_id_arg],
-                     "return" => "None."
-                   }
-                  ]
+      {
+        "name" => "unit on",
+        "description" => "Turn on the designated unit.",
+        "arguments" => [device_id_arg],
+        "return" => "None."
+      },
+      {
+        "name" => "unit off",
+        "description" => "Turn off the designated unit.",
+        "arguments" => [device_id_arg],
+        "return" => "None."
+      }
+    ]
   })
 
-add_handler("unit on", "device", "POST", "/device/$(device)/on", "") { |device|
+add_role_description(
+  {
+    "name" => "insteon controller",
+    "description" => "A controller for INSTEON devices, which are addressed by a six-character hex string.",
+    "commands" => [
+      {
+        "name" => "turn on",
+        "description" => "Turn on the designated unit.",
+        "arguments" => [
+          {
+            "name" => "device",
+            "description" => "The six-character address of the device."
+          }
+        ],
+        "return" => "None."
+      },
+      {
+        "name" => "turn off",
+        "description" => "Turn off the designated unit.",
+        "arguments" => [
+          {
+            "name" => "device",
+            "description" => "The six-character address of the device."
+          }
+        ],
+        "return" => "None."
+      },
+      {
+        "name" => "set brightness",
+        "description" => "Sets the brightness of the device.",
+        "arguments" => [
+          {
+            "name" => "device",
+            "description" => "The six-character address of the device."
+          },
+          {
+            "name" => "brightness",
+            "description" => "Brightness level, between 0 and 1."
+          }
+        ],
+        "return" => "None."
+      }
+    ]
+  })
+
+
+add_handler("unit on", "device", "POST", "/device/$(device)/on", "", 0) { |device|
   settings.x10.device_on(device)
   ""
 }
 
-add_handler("unit off", "device", "POST", "/device/$(device)/off", "") { |device|
+add_handler("unit off", "device", "POST", "/device/$(device)/off", "", 0) { |device|
   settings.x10.device_off(device)
+  ""
+}
+
+add_handler("turn on", "device", "POST", "/insteon/$(device)/on", "", 1) { |device|
+  settings.insteon.device_on(device)
+  ""
+}
+
+add_handler("turn off", "device", "POST", "/insteon/$(device)/off", "", 1) { |device|
+  settings.insteon.device_off(device)
+  ""
+}
+
+add_handler(
+    "set brightness",
+    ["device", "brightness"],
+    "POST", "/insteon/$(device)/brightness",
+    "$(brightness)", 1) { |device|
+    brightness = (request.body.read).to_f
+  settings.insteon.device_set_brightness(device, brightness)
   ""
 }
