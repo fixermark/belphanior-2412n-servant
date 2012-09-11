@@ -36,14 +36,12 @@ add_role_description(
       {
         "name" => "unit on",
         "description" => "Turn on the designated unit.",
-        "arguments" => [device_id_arg],
-        "return" => "None."
+        "arguments" => [device_id_arg]
       },
       {
         "name" => "unit off",
         "description" => "Turn off the designated unit.",
-        "arguments" => [device_id_arg],
-        "return" => "None."
+        "arguments" => [device_id_arg]
       }
     ]
   })
@@ -61,8 +59,7 @@ add_role_description(
             "name" => "device",
             "description" => "The six-character address of the device."
           }
-        ],
-        "return" => "None."
+        ]
       },
       {
         "name" => "turn off",
@@ -72,8 +69,7 @@ add_role_description(
             "name" => "device",
             "description" => "The six-character address of the device."
           }
-        ],
-        "return" => "None."
+        ]
       },
       {
         "name" => "set brightness",
@@ -87,8 +83,7 @@ add_role_description(
             "name" => "brightness",
             "description" => "Brightness level, between 0 and 1."
           }
-        ],
-        "return" => "None."
+        ]
       }
     ]
   })
