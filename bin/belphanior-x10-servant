@@ -30,6 +30,7 @@ device_id_arg = {
 
 add_role_description(
   {
+    "url" => "http://belphanior.net/roles/x10/v1",
     "name" => "x10 controller",
     "description" => "A controller for X10 devices, which can address the devices by house code and unit code.",
     "commands" => [
@@ -48,6 +49,7 @@ add_role_description(
 
 add_role_description(
   {
+    "url" => "http://belphanior.net/roles/insteon/v1",
     "name" => "insteon controller",
     "description" => "A controller for INSTEON devices, which are addressed by a six-character hex string.",
     "commands" => [
