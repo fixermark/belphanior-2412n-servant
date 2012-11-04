@@ -23,8 +23,8 @@ end
 #
 spec = Gem::Specification.new do |s|
   s.name = %q{belphanior-2412n-servant}
-  s.version = "0.0.1"
-  s.date = %q{2012-11-01}
+  s.version = "0.0.2"
+  s.date = %q{2012-11-03}
   s.authors = ["Mark T. Tomczak"]
   s.email = %q{belphanior+2412n-servant@fixermark.com}
   s.summary = %q{Control an x10 or INSTEON system using the Belphanior home-network protocol and a Smarthome 2412n SmartLinc central controller.}
