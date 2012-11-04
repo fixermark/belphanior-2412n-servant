@@ -35,7 +35,7 @@ spec = Gem::Specification.new do |s|
     on and off and control brightness and intensity.
   EOF
   s.homepage = "http://belphanior.net"
-  s.licenses = ["apache"]
+  s.licenses = ["http://www.apache.org/licenses/LICENSE-2.0.txt"]
   s.add_dependency("belphanior-servant", ">= 0.0.1")
   s.files = [ "LICENSE",
               "lib/belphanior/servant/homenetwork/insteon_2412n_marshaller.rb",
