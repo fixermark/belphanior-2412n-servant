@@ -1,0 +1,4 @@
+The Belphanior 2412n servant interfaces to a Smarthome 2412n SmartLinc controller
+(http://www.smarthome.com/2412N/SmartLinc-INSTEON-Central-Controller/p.aspx). It can
+be used to send commands directly to the controller to switch lights and appliances
+on and off and control brightness and intensity.

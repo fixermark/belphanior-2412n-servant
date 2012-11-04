@@ -28,12 +28,7 @@ spec = Gem::Specification.new do |s|
   s.authors = ["Mark T. Tomczak"]
   s.email = %q{belphanior+2412n-servant@fixermark.com}
   s.summary = %q{Control an x10 or INSTEON system using the Belphanior home-network protocol and a Smarthome 2412n SmartLinc central controller.}
-  s.description = <<-EOF
-    The Belphanior 2412n servant interfaces to a Smarthome 2412n SmartLinc controller
-    (http://www.smarthome.com/2412N/SmartLinc-INSTEON-Central-Controller/p.aspx). It can
-    be used to send commands directly to the controller to switch lights and appliances
-    on and off and control brightness and intensity.
-  EOF
+  s.description = IO.read("README")
   s.homepage = "http://belphanior.net"
   s.licenses = ["http://www.apache.org/licenses/LICENSE-2.0.txt"]
   s.add_dependency("belphanior-servant", ">= 0.0.1")
